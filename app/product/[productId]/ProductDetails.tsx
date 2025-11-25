@@ -5,6 +5,7 @@ import { ProductImage } from "@/app/components/products/ProductImage"
 import SetColor from "@/app/components/products/SetColor"
 import SetQuantity from "@/app/components/products/SetQuantity"
 import { CartProductType, SelectedImageType } from "@/app/types/CartProductTypes"
+import { useCart } from "@/hooks/useCart"
 import { Rating } from "@mui/material"
 import { useCallback, useState } from "react"
 
@@ -17,7 +18,7 @@ const Horizontal = () => {
 }
 
 const ProductDetails: React.FC<ProductProps> = ({ product }) => {
-
+    const { handleAddProductToCart, cartProducts, cartTotalQty } = useCart();
     const [cartProduct, setCartProduct] = useState<CartProductType>(
 
         {
@@ -31,6 +32,8 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
             price: product.price
         }
     );
+
+    console.log("cart products ",cartProducts)
 
     const handleColorSelect = useCallback(
         (value: SelectedImageType) => {
@@ -113,7 +116,7 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
                 <div className="max-w-[300px]">
                     <Button
                         label="Add to Cart"
-                        onClick={() => { }}
+                        onClick={() => {handleAddProductToCart(cartProduct) }}
                     />
                 </div>
 
