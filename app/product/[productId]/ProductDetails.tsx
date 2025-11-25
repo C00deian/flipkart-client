@@ -1,6 +1,7 @@
 'use client'
 import Button from "@/app/components/Button"
 import { getProductRating } from "@/app/components/products/ProductCard"
+import { ProductImage } from "@/app/components/products/ProductImage"
 import SetColor from "@/app/components/products/SetColor"
 import SetQuantity from "@/app/components/products/SetQuantity"
 import { CartProductType, SelectedImageType } from "@/app/types/CartProductTypes"
@@ -40,8 +41,7 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
         [cartProduct.selectedImage]
     );
 
-
-    console.log("cartProduct", cartProduct)
+    // console.log("cartProduct", cartProduct)
 
     const handleQtyIncrease = useCallback(() => {
         setCartProduct((prev) => {
@@ -69,7 +69,11 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
         <div className="grid grid-cols-1
       md:grid-cols-2 gap-12
       ">
-            <div>Image</div>
+            <ProductImage
+                cartProduct={cartProduct}
+                product={product}
+                handleColorSelect={handleColorSelect}
+            />
             <div className="flex flex-col gap-1 text-slate-500 text-sm">
                 <h2 className="text-3xl font-medium text-slate-700">{product.name}</h2>
                 <div className="flex items-center gap-2">
