@@ -10,7 +10,7 @@ interface SetQtyProps {
     handleQtyDecrease: () => void;
 }
 
-const btnStyle = 'border-[1.2px] border-slate-300 px-2 rounded'
+const btnStyle = 'border-[1.2px] border-slate-300 px-2 rounded cursor-pointer'
 
 const SetQuantity: React.FC<SetQtyProps> = ({
     cartCounter,

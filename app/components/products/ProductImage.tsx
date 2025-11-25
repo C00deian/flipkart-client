@@ -48,7 +48,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
             onClick={() => handleColorSelect(image)}
             className={`
               relative 
-              w-20 
+              w-[80%]
               h-20 
               rounded 
               cursor-pointer
@@ -70,18 +70,21 @@ export const ProductImage: React.FC<ProductImageProps> = ({
       </div>
 
       {/* Right side – main selected image */}
-      <div className="col-span-5 flex items-center justify-center">
-        <div className="relative w-full h-full max-h-[500px]">
-          {cartProduct?.selectedImage && (
-            <Image
-              src={cartProduct.selectedImage.image}
-              alt={cartProduct.name}
-              fill
-              className="object-contain"
-            />
-          )}
-        </div>
+      <div className="relative col-span-5 aspect-square">
+        {cartProduct?.selectedImage && (
+          <Image
+            src={cartProduct.selectedImage.image}
+            alt={cartProduct.name}
+            fill
+            className="object-contain w-full
+              max-h-[500px]
+              min-h-[300px]
+              sm:min-h-[400px]
+              "
+          />
+        )}
       </div>
+
     </div>
   );
 };
