@@ -1,6 +1,9 @@
 'use client'
 import { getProductRating } from "@/app/components/products/ProductCard"
+import SetColor from "@/app/components/products/SetColor"
+import { CartProductType, SelectedImageType } from "@/app/types/CartProductTypes"
 import { Rating } from "@mui/material"
+import { useCallback, useState } from "react"
 
 interface ProductProps {
     product: any
@@ -11,6 +14,33 @@ const Horizontal = () => {
 }
 
 const ProductDetails: React.FC<ProductProps> = ({ product }) => {
+
+    const [cartProduct, setCartProduct] = useState<CartProductType>(
+
+        {
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            category: product.category,
+            brand: product.brand,
+            selectedImage: { ...product.images[0] },
+            quantity: 1,
+            price: product.price
+        }
+    );
+
+    const handleColorSelect = useCallback(
+        (value: SelectedImageType) => {
+            setCartProduct((pre) => {
+                return { ...pre, selectedImage: value }
+            })
+        },
+        [cartProduct.selectedImage]
+    );
+
+
+    console.log("cartProduct", cartProduct)
+
     return (
         <div className="grid grid-cols-1
       md:grid-cols-2 gap-12
@@ -39,7 +69,12 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
                     {product.inStock ? "In stock" : "Out of Stock"}
                 </div>
                 <Horizontal />
-                <div>color</div>
+                <SetColor
+                    images={product.images}
+                    cartProduct={cartProduct}
+                    handleColorSelect={handleColorSelect}
+
+                />
                 <Horizontal />
                 <div>quantity</div>
                 <Horizontal />
