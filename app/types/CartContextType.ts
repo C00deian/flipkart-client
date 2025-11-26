@@ -6,5 +6,6 @@ import { CartProductType } from "./CartProductTypes"
      handleAddProductToCart: (product: CartProductType) => void;
      handleRemoveProductFromCart: (product: CartProductType) => void;
      handleCartQtyIncrease: (product: CartProductType) => void;
-         handleCartQtyDecrease: (product: CartProductType) => void;
+    handleCartQtyDecrease: (product: CartProductType) => void;
+    handleClearCart: () => void;
 }

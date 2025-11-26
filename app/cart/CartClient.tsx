@@ -9,7 +9,7 @@ import CartContent from "./CartContent";
 
 
 export const CartClient = () => {
-    const { cartProducts } = useCart();
+    const { cartProducts ,handleClearCart} = useCart();
 
     if (!cartProducts || cartProducts.length === 0) {
         return (
@@ -58,7 +58,7 @@ export const CartClient = () => {
             py-4 justify-between gap-4
             ">
                 <div className="w-[90px]">
-                    <Button label="Clear Cart" onClick={() => { }} small outline />
+                    <Button label="Clear Cart" onClick={() => handleClearCart()} small outline />
                 </div>
                 <div className="flex text-sm flex-col gap-1 items-start">
 

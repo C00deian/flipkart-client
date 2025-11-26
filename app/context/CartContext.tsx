@@ -12,8 +12,6 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
   const [cartProducts, setCartProducts] = useState<CartProductType[]>([]);
 
 
-
-
   const handleAddProductToCart = useCallback((product: CartProductType) => {
     setCartProducts((prev) => {
       let updatedCart;
@@ -41,7 +39,6 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
     }
        toast.success("Product removed.");
   }, [cartProducts])
-
 
 
   const handleCartQtyIncrease = useCallback((product: CartProductType) => {
@@ -88,6 +85,16 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
     }
   }, [cartProducts])
 
+
+  const handleClearCart = useCallback(() => {
+    setCartProducts([]);
+    setCartTotalQty(0);
+    localStorage.setItem("eShopCartItem" , JSON.stringify(null))
+
+  },[cartProducts])
+
+
+
   useEffect(() => {
     const cartItems: any = localStorage.getItem("eShopCartItems")
     const cProducts: CartProductType[] = JSON.parse(cartItems);
@@ -100,7 +107,8 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
     handleAddProductToCart,
     handleRemoveProductFromCart,
     handleCartQtyIncrease,
-    handleCartQtyDecrease
+    handleCartQtyDecrease,
+    handleClearCart
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
