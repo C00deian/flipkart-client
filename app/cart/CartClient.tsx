@@ -4,8 +4,8 @@ import { useCart } from "@/hooks/useCart"
 import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
 import { Heading } from "../components/Heading";
-import Horizontal from "../components/Horizontal";
 import Button from "../components/Button";
+import CartContent from "./CartContent";
 
 
 export const CartClient = () => {
@@ -41,6 +41,7 @@ export const CartClient = () => {
             gap-4
             items-center
             mt-8
+            mb-2
             ">
                 <div className="col-span-2 justify-self-start">PRODUCT</div>
                 <div className="justify-self-center">PRICE</div>
@@ -50,11 +51,7 @@ export const CartClient = () => {
          
             <div>
                 {cartProducts && cartProducts.map((item) => {
-                    return <div key={item.id}>
-                        {
-                            item.name
-                        }
-                    </div>
+                    return <CartContent key={item.id} item={item}/>
                 })}
             </div>
             <div className="flex  border-t-2 border-slate-200

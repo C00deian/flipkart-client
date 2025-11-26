@@ -138,7 +138,8 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
 
                         />
                         <Horizontal />
-                        <SetQuantity
+                            <SetQuantity
+                                title={"Quantity"}
                             cartProduct={cartProduct}
                             handleQtyIncrease={handleQtyIncrease}
                             handleQtyDecrease={handleQtyDecrease}
