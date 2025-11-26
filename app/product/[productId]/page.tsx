@@ -1,15 +1,19 @@
 import Container from "@/app/components/Container"
 import ProductDetails from "./ProductDetails"
-import { product } from "@/utils/product"
+import { products } from "@/utils/products"
 import { ListRating } from "./ListRating"
 
 interface IPrams {
-  productId?: string
+  params: Promise<{ productId: string }>;
 }
 
 
 
-const Product = async ({ params }: { params: IPrams }) => {
+const Product = async ({ params }: IPrams) => {
+
+ const { productId } = await params;
+
+  const product  =  products.find((item) => item.id === productId)
 
   return (
     <div className="p-8">
