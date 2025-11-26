@@ -13,7 +13,7 @@ interface ItemContentProps {
 }
 const CartContent: React.FC<ItemContentProps> = ({ item }) => {
  
-    const { handleRemoveProductFromCart,handleCartQtyIncrease } = useCart();
+    const { handleRemoveProductFromCart,handleCartQtyIncrease , handleCartQtyDecrease } = useCart();
 
     return (
         <div className="
@@ -68,7 +68,7 @@ const CartContent: React.FC<ItemContentProps> = ({ item }) => {
                     <SetQuantity
                         cartCounter={true}
                         cartProduct={item}
-                        handleQtyDecrease={() => {}}
+                        handleQtyDecrease={() => handleCartQtyDecrease(item)}
                         handleQtyIncrease={() =>handleCartQtyIncrease(item)}
                     />
                 </div>

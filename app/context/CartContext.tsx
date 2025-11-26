@@ -66,6 +66,28 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
     }
   }, [cartProducts])
 
+   const handleCartQtyDecrease = useCallback((product: CartProductType) => {
+    let updatedCart;
+    if (product.quantity === 1) {
+      return toast.error("Oops! Minimum reached");
+    }
+    if (cartProducts) {
+      updatedCart = [...cartProducts];
+
+      const existingIndex = cartProducts.findIndex((item) => item.id === product.id);
+ 
+      if (existingIndex > -1) {
+        updatedCart[existingIndex].quantity =
+          updatedCart[existingIndex].quantity - 1;
+      }
+
+      setCartProducts(updatedCart)
+      localStorage.setItem("eShopCartItems",
+        JSON.stringify(updatedCart));
+
+    }
+  }, [cartProducts])
+
   useEffect(() => {
     const cartItems: any = localStorage.getItem("eShopCartItems")
     const cProducts: CartProductType[] = JSON.parse(cartItems);
@@ -77,7 +99,8 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
     cartProducts,
     handleAddProductToCart,
     handleRemoveProductFromCart,
-    handleCartQtyIncrease
+    handleCartQtyIncrease,
+    handleCartQtyDecrease
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
