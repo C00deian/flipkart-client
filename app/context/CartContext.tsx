@@ -26,8 +26,24 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
 
       return updatedCart;
     });
-       toast.success("Product added to cart");
-  }, [])
+       toast.success("Product added to cart.");
+  }, [cartProducts])
+
+
+  const handleRemoveProductFromCart = useCallback((product: CartProductType) => {
+    if(cartProducts) {
+      const filteredProduct = cartProducts.filter((item) => {
+        return item.id !== product.id
+      })
+      setCartProducts(filteredProduct);
+         localStorage.setItem("eShopCartItems",
+        JSON.stringify(filteredProduct))
+    }
+       toast.success("Product removed.");
+  }, [cartProducts])
+
+
+
 
   useEffect(() => {
     const cartItems: any = localStorage.getItem("eShopCartItems")
@@ -39,6 +55,7 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
     cartTotalQty,
     cartProducts,
     handleAddProductToCart,
+    handleRemoveProductFromCart
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

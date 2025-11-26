@@ -6,12 +6,14 @@ import Image from "next/image"
 import { formatePrice } from "@/utils/formatePrice"
 import SetQuantity from "../components/products/SetQuantity"
 import Link from "next/link"
+import { useCart } from "@/hooks/useCart"
 
 interface ItemContentProps {
     item: CartProductType
 }
 const CartContent: React.FC<ItemContentProps> = ({ item }) => {
-
+ 
+    const { handleRemoveProductFromCart } = useCart();
 
     return (
         <div className="
@@ -48,7 +50,7 @@ const CartContent: React.FC<ItemContentProps> = ({ item }) => {
                     <div>{item.selectedImage.color}</div>
                     <div className="w-[70px]">
                         <button className="text-slate-500 underline hover:cursor-pointer"
-                            onClick={() => { }}
+                            onClick={() => handleRemoveProductFromCart(item)}
                         >
                             Remove
                         </button>
