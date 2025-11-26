@@ -10,13 +10,10 @@ import { Rating } from "@mui/material"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 import { MdCheckCircle } from "react-icons/md"
+import Horizontal from "@/app/components/Horizontal"
 
 interface ProductProps {
     product: any
-}
-
-const Horizontal = () => {
-    return <hr className="w-30% my-2" />
 }
 
 const ProductDetails: React.FC<ProductProps> = ({ product }) => {
