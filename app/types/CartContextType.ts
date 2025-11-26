@@ -4,6 +4,7 @@ import { CartProductType } from "./CartProductTypes"
     cartTotalQty: number
     cartProducts: CartProductType[]
      handleAddProductToCart: (product: CartProductType) => void;
-    handleRemoveProductFromCart: (product: CartProductType) => void;
+     handleRemoveProductFromCart: (product: CartProductType) => void;
+     handleCartQtyIncrease: (product: CartProductType) => void;
     
 }

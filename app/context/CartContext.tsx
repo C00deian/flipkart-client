@@ -44,6 +44,27 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
 
 
 
+  const handleCartQtyIncrease = useCallback((product: CartProductType) => {
+    let updatedCart;
+    if (product.quantity === 49) {
+      return toast.error("Oops! Maximum reached");
+    }
+    if (cartProducts) {
+      updatedCart = [...cartProducts];
+
+      const existingIndex = cartProducts.findIndex((item) => item.id === product.id);
+ 
+      if (existingIndex > -1) {
+        updatedCart[existingIndex].quantity =
+          updatedCart[existingIndex].quantity + 1;
+      }
+
+      setCartProducts(updatedCart)
+      localStorage.setItem("eShopCartItems",
+        JSON.stringify(updatedCart));
+
+    }
+  }, [cartProducts])
 
   useEffect(() => {
     const cartItems: any = localStorage.getItem("eShopCartItems")
@@ -55,7 +76,8 @@ export const CartContextProvider = ({ children }: { children: React.ReactNode })
     cartTotalQty,
     cartProducts,
     handleAddProductToCart,
-    handleRemoveProductFromCart
+    handleRemoveProductFromCart,
+    handleCartQtyIncrease
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
