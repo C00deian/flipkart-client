@@ -35,11 +35,12 @@ export const Inputs: React.FC<InputProps> = ({
                 className={
                     `peer
                 w-full
+                rounded-md
                 p-4
                 pt-6
                 outline-none
-                border-y-white
                 font-light
+                bg-white
                 border-2
                 transition
                 disabled:opacity-70
@@ -48,12 +49,12 @@ export const Inputs: React.FC<InputProps> = ({
                 ${errors[id]? "focus:border-rose-400" :"focus:border-slate-300"}
                 `}/>
             <label htmlFor={id}
-                className="absolute 
+                className={`absolute 
                 cursor-text
                 text-md
                 duration-150
                 transform
-                -transition-y-3
+                -translate-y-3
                 top-5
                 z-10
                 origin-left
@@ -61,9 +62,13 @@ export const Inputs: React.FC<InputProps> = ({
                 peer-placeholder-shown:scale-100
                 peer-placeholder-shown:translate-y-0
                 peer-focus:scale-75
-                peer-focus:translate-y-4
-                "
-            
+                peer-focus:-translate-y-4
+                            ${errors[id]? "text-rose-500" :"text-slate-400"}
+
+
+                `
+                    
+            }
             >
                 {label}
             </label>
