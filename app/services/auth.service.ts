@@ -7,6 +7,14 @@ export const registerUser = async (data: any) => {
 };
 
 export const loginUser = async (data: any) => {
-  const res = await axios.post("http://localhost:8081/auth/login", data);
+  const res = await api.post("http://localhost:8081/auth/login", data);
   return res;
 };
+
+export const getCurrentUser = async() => {
+  const res = await api.get("http://localhost:8081/auth/me");
+  return res;
+};
+
+
+

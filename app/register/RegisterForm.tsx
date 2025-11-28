@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Heading } from "../components/Heading"
 import { Inputs } from "../components/inputs/Inputs"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
@@ -10,9 +10,15 @@ import { AiOutlineGoogle } from "react-icons/ai"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { loginUser, registerUser } from "../services/auth.service"
+import { User } from "../types/User"
 
 
-const RegisterForm = () => {
+interface RegisterProps {
+    currentUser: User
+    refresh: () => void;
+}
+
+const RegisterForm : React.FC<RegisterProps> = ({currentUser , refresh}) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const { register, handleSubmit, reset, formState: { errors } } = useForm<FieldValues>({
@@ -23,8 +29,14 @@ const RegisterForm = () => {
         }
     })
 
+         useEffect(() => {
+         if (currentUser) {
+             router.push("/cart");
+         }
+     }, [currentUser]);
+
  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-  setIsLoading(true);
+     setIsLoading(true);
 
   try {
     const res =  await registerUser(data);
@@ -37,12 +49,13 @@ const RegisterForm = () => {
 
     const token = response.data.data.token;
 
-    localStorage.setItem("token", token);
+      localStorage.setItem("token", token);
+
 
     toast.success(response.data.message || "Logged in");
 
       router.push("/cart");
-      router.refresh();
+      refresh()
       reset();
 
   } catch (error: any) {
@@ -50,13 +63,18 @@ const RegisterForm = () => {
   } finally {
     setIsLoading(false);
   }
-};
-
+ };
+    
+    
+     if (currentUser) {
+        return <p className="text-center">Logged in. Redirecting...</p>
+     }
+    
 
     return (
         <>
             <Heading
-                title="Register Now"
+                title="Register now to E-Shop"
             />
             <Button outline
                 label="Sign up with Google"

@@ -3,6 +3,7 @@ import { Redressed } from 'next/font/google'
 import Container from '../Container'
 import Link from 'next/link'
 import { CartCount } from './CartCount';
+import UserMenu from './UserMenu';
 
 const redressed = Redressed({ subsets: ['latin'], weight: ['400'] });
 
@@ -23,9 +24,9 @@ function NavBar() {
                         <Link className={`${redressed.className} font-bold text-2xl`} href={"/"}>E-shop</Link>
 
                         <div className='hidden md:block'>Search</div>
-                        <div className='flex items-center gap-8 md:ga'>
-                           <CartCount/>
-                            <div>UserMenu</div>
+                        <div className='flex items-center gap-8 md:gap-8'>
+                            <UserMenu />
+                            <CartCount/>
                         </div>
 
                     </div>

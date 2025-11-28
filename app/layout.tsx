@@ -6,7 +6,7 @@ import NavBar from "./components/nav/NavBar";
 import Footer from "./components/footer/Footer";
 import { CartContextProvider } from "./context/CartContext";// ✔ Correct path
 import { Toaster } from "react-hot-toast";
-
+import { AuthProvider } from "./context/AuthContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,11 +33,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }
         }}/>
         <CartContextProvider>
+          <AuthProvider>
           <div className="flex flex-col min-h-screen border">
             <NavBar />
             <main className="grow">{children}</main>
             <Footer />
-          </div>
+            </div>
+               
+          </AuthProvider>
         </CartContextProvider>
 
       </body>
