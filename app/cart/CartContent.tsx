@@ -1,9 +1,9 @@
 "use client"
 
-import { truncateText } from "@/utils/truncateText"
+import { truncateText } from "@/app/utils/truncateText"
 import { CartProductType } from "../types/CartProductTypes"
 import Image from "next/image"
-import { formatePrice } from "@/utils/formatePrice"
+import { formatePrice } from "../utils/formatePrice"
 import SetQuantity from "../components/products/SetQuantity"
 import Link from "next/link"
 import { useCart } from "@/hooks/useCart"
@@ -12,8 +12,8 @@ interface ItemContentProps {
     item: CartProductType
 }
 const CartContent: React.FC<ItemContentProps> = ({ item }) => {
- 
-    const { handleRemoveProductFromCart,handleCartQtyIncrease , handleCartQtyDecrease} = useCart();
+
+    const { handleRemoveProductFromCart, handleCartQtyIncrease, handleCartQtyDecrease } = useCart();
 
     return (
         <div className="
@@ -69,7 +69,7 @@ const CartContent: React.FC<ItemContentProps> = ({ item }) => {
                         cartCounter={true}
                         cartProduct={item}
                         handleQtyDecrease={() => handleCartQtyDecrease(item)}
-                        handleQtyIncrease={() =>handleCartQtyIncrease(item)}
+                        handleQtyIncrease={() => handleCartQtyIncrease(item)}
                     />
                 </div>
             </div>

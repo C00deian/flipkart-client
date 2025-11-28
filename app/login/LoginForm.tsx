@@ -7,20 +7,42 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import Button from "../components/Button"
 import Link from "next/link"
 import { AiOutlineGoogle } from "react-icons/ai"
+import { loginUser } from "../services/auth.service"
+import { toast } from "react-hot-toast"
+import { useRouter } from "next/navigation"
 
 
 const LoginForm = () => {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm<FieldValues>({
+    const { register, handleSubmit,reset, formState: { errors } } = useForm<FieldValues>({
         defaultValues: {
             email: '',
             password: ''
         }
     })
 
-    const onsubmit: SubmitHandler<FieldValues> = (data) => {
+    const onsubmit: SubmitHandler<FieldValues> = async(data) => {
         setIsLoading(true)
-        console.log(data);
+       try {
+          
+           const response = await loginUser(data);
+       
+           const token = response.data.data.token;
+       
+           localStorage.setItem("token", token);
+       
+           toast.success(response.data.message || "Logged in");
+       
+             router.push("/cart");
+             router.refresh();
+             reset();
+       
+         } catch (error: any) {
+           toast.error(error?.response?.data?.message || "Something went wrong");
+         } finally {
+           setIsLoading(false);
+         }
     }
 
     return (

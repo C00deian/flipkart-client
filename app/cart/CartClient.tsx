@@ -6,11 +6,11 @@ import { MdArrowBack } from "react-icons/md";
 import { Heading } from "../components/Heading";
 import Button from "../components/Button";
 import CartContent from "./CartContent";
-import { formatePrice } from "@/utils/formatePrice";
+import { formatePrice } from "../utils/formatePrice";
 
 
 export const CartClient = () => {
-    const { cartProducts ,handleClearCart, cartTotalAmount } = useCart();
+    const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
 
     if (!cartProducts || cartProducts.length === 0) {
         return (
@@ -49,10 +49,10 @@ export const CartClient = () => {
                 <div className="justify-self-center">QUANTITY</div>
                 <div className="justify-self-end">TOTAL</div>
             </div>
-         
+
             <div>
                 {cartProducts && cartProducts.map((item) => {
-                    return <CartContent key={item.id} item={item}/>
+                    return <CartContent key={item.id} item={item} />
                 })}
             </div>
             <div className="flex  border-t-2 border-slate-200
@@ -65,7 +65,7 @@ export const CartClient = () => {
 
                     <div className="flex justify-between w-full text-base font-semibold">
                         <span className="">Subtotal</span>
-                        <span className="">{ formatePrice(cartTotalAmount)}</span>
+                        <span className="">{formatePrice(cartTotalAmount)}</span>
                     </div>
 
                     <p className=" text-slate-500">Taxes and shipping calculated at checkout</p>

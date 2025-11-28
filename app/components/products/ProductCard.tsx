@@ -1,6 +1,6 @@
 "use client";
-import { formatePrice } from "@/utils/formatePrice";
-import { truncateText } from "@/utils/truncateText";
+import { formatePrice } from "@/app/utils/formatePrice";
+import { truncateText } from "@/app/utils/truncateText";
 import { Rating } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -27,12 +27,12 @@ export const getProductRating = (data: any) => {
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
 
 
-    const router = useRouter();
+  const router = useRouter();
 
   return (
-      <div onClick={() =>
-          router.push(`/product/${data.id}`)
-      }
+    <div onClick={() =>
+      router.push(`/product/${data.id}`)
+    }
       className="col-span-1
       cursor-pointer
       border-[1.2px]
