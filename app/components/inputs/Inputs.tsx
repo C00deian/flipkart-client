@@ -1,77 +1,65 @@
-"use client"
+"use client";
 
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form"
+import { FieldErrors, UseFormRegister, Path, FieldValues } from "react-hook-form";
 
-interface InputProps {
-    id: string,
-    label: string,
-    type?: string,
-    disabled?: boolean,
-    required?: boolean,
-    register: UseFormRegister<FieldValues>
-    errors: FieldErrors
+interface InputProps<T extends FieldValues> {
+  id: Path<T>;
+  label: string;
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
+  disabled?: boolean;
 }
 
-export const Inputs: React.FC<InputProps> = ({
-    id,
-    label,
-    type,
-    disabled,
-    required,
-    register,
-    errors
-}) => {
-    return (
-        <div
-            className="w-full relative"
-        >
-            <input
-                autoComplete="off"
-                id={id}
-                disabled={disabled}
-                {...register(id, { required })}
-                placeholder=""
-                type={type}
-                className={
-                    `peer
-                w-full
-                rounded-md
-                p-4
-                pt-6
-                outline-none
-                font-light
-                bg-white
-                border-2
-                transition
-                disabled:opacity-70
-                disabled:cursor-not-allowed
-                ${errors[id]? "border-rose-400" :"border-slate-300"}
-                ${errors[id]? "focus:border-rose-400" :"focus:border-slate-300"}
-                `}/>
-            <label htmlFor={id}
-                className={`absolute 
-                cursor-text
-                text-md
-                duration-150
-                transform
-                -translate-y-3
-                top-5
-                z-10
-                origin-left
-                left-4
-                peer-placeholder-shown:scale-100
-                peer-placeholder-shown:translate-y-0
-                peer-focus:scale-75
-                peer-focus:-translate-y-4
-                            ${errors[id]? "text-rose-500" :"text-slate-400"}
+const Inputs = <T extends FieldValues>({
+  id,
+  label,
+  register,
+  errors,
+  disabled,
+}: InputProps<T>) => {
 
+  // Automatic type detection
+  const autoType =
+    id === "email" ? "email" : id === "phoneNumber" ? "text" : "";
 
-                `
-                    
-            }
-            >
-                {label}
-            </label>
-        </div>
-    )
-}
+  const error = errors[id as keyof FieldErrors<T>];
+
+  return (
+    <div className="w-full relative">
+      <input
+        id={String(id)}
+        disabled={disabled}
+        autoComplete="off"
+        {...register(id)} 
+        type={autoType}
+        className={`
+          peer w-full rounded-md p-4 pt-6 outline-none 
+          bg-white border-2 transition 
+          ${error ? "border-red-500" : "border-slate-300"}
+          ${error ? "focus:border-red-500" : "focus:border-slate-300"}
+        `}
+      />
+
+      <label
+        htmlFor={String(id)}
+        className={`
+          absolute left-4 top-5 z-10 text-md duration-150 transform
+          -translate-y-3 origin-left cursor-text 
+          peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+          peer-focus:scale-75 peer-focus:-translate-y-4
+          ${error ? "text-red-500" : "text-slate-400"}
+        `}
+      >
+        {label}
+      </label>
+
+      {error && (
+        <p className="text-red-500 text-sm mt-1">
+          {(error.message as string) || "Invalid field"}
+        </p>
+      )}
+    </div>
+  );
+};
+
+export default Inputs;

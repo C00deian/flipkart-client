@@ -26,6 +26,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       setCurrentUser(res.data);
 
+      console.log("current user", res.data);
+
     } catch (error) {
       setCurrentUser(null);
     } finally {

@@ -1,104 +1,142 @@
-"use client"
+"use client";
 
-import {useEffect, useState } from "react"
-import { Heading } from "../components/Heading"
-import { Inputs } from "../components/inputs/Inputs"
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
-import Button from "../components/Button"
-import Link from "next/link"
-import { AiOutlineGoogle } from "react-icons/ai"
-import { loginUser } from "../services/auth.service"
-import { toast } from "react-hot-toast"
-import { useRouter } from "next/navigation"
-import { User } from "../types/User"
+import { useEffect, useState } from "react";
+import { Heading } from "../components/Heading";
+import Inputs from "../components/inputs/Inputs";
+import { SubmitHandler, useForm } from "react-hook-form";
+import Button from "../components/Button";
+import Link from "next/link";
+import { AiOutlineGoogle } from "react-icons/ai";
+import { login } from "../services/auth.service";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { LoginRequest, UserResponse } from "../types/User";
+import { loginSchema } from "./schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { isValid } from "zod/v3";
+import { FcGoogle } from "react-icons/fc";
 
-interface LogniFormProps {
-    currentUser: User
+interface LoginFormProps {
+    currentUser: UserResponse;
     refresh: () => void;
 }
 
-const LoginForm : React.FC<LogniFormProps> = ({currentUser, refresh}) => {
-
+const LoginForm: React.FC<LoginFormProps> = ({ currentUser, refresh }) => {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm<FieldValues>({
+    const [isEmail, setIsEmail] = useState(true);
+
+
+    // ⭐ Fully typed login form with zod
+    const form = useForm<LoginRequest>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
-            email: '',
-            password: ''
+            email: "",
+            phoneNumber: "",
+        },
+        mode:"onChange"
+    });
+
+    const { register, handleSubmit, resetField, formState: { errors , isValid } } = form;
+
+
+    const handleInputs = () => {
+        setIsEmail(!isEmail);
+        if (isEmail) {
+            resetField("email");
+        } else {
+            resetField("phoneNumber");
         }
-    })
-
-   const router = useRouter();
-
-useEffect(() => {
-    if (currentUser) {
-        router.push("/cart");
-    }
-}, [currentUser]);
-
-    const onsubmit: SubmitHandler<FieldValues> = async(data) => {
-        setIsLoading(true)
-       try {
-          
-           const response = await loginUser(data);
-       
-           const token = response.data.data.token;
-       
-           localStorage.setItem("token", token);
-           refresh();
-       
-           toast.success(response.data.message || "Logged in");
-           router.push("/cart");
-       
-         } catch (error: any) {
-           toast.error(error?.response?.data?.message || "Something went wrong");
-         } finally {
-           setIsLoading(false);
-         }
     }
 
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:8081/oauth2/authorization/google";
+    };
+
+    useEffect(() => {
+        if (currentUser) {
+            router.push("/cart");
+        }
+    }, [currentUser]);
+
+    const onSubmit: SubmitHandler<LoginRequest> = async (data) => {
+
+        setIsLoading(true);
+
+        try {
+
+            const response = await login(data);
+            console.log(response);
+
+            const token = response.data.token
+            localStorage.setItem("token", token);
+
+            toast.success(response.message);
+            refresh();
+
+            router.push("/cart");
+        } catch (error: any) {
+            toast.error(error?.response?.data?.message || "Something went wrong");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     if (currentUser) {
-        return <p className="text-center">Logged in. Redirecting...</p>
+        return <p className="text-center">Logged in. Redirecting...</p>;
     }
 
     return (
         <>
-            <Heading
-                title="Sign in to E-Shop"
-            />
-            <Button outline
+            <Heading title="Sign in to E-Shop" />
+
+            <Button
+                outline
                 label="Continue with Google"
-                icon={AiOutlineGoogle}
-                onClick={() => {}}
+                icon={FcGoogle}
+                onClick={handleGoogleLogin}
             />
 
-            <Inputs
-                id="email"
-                label="Email"
-                disabled={isLoading}
-                register={register}
-                errors={errors}
-                required
+            {isEmail ? (
+                <Inputs<LoginRequest>
+                    id="email"
+                    label="Email"
+                    register={register}
+                    errors={errors}
+                    disabled={isLoading}
+                />
+            ) : (
+                <Inputs<LoginRequest>
+                    id="phoneNumber"
+                    label="Phone Number"
+                    register={register}
+                    errors={errors}
+                    disabled={isLoading}
+                />
+            )}
+
+
+       <div 
+    onClick={handleInputs} 
+    className="text-blue-700 cursor-pointer w-fit mt-2 hover:underline"
+>
+    {`Use ${isEmail ? "Phone Number" : "Email-ID"}`}
+</div>
+
+            <Button
+                label={isLoading ? "Loading" : "Continue"}
+                onClick={handleSubmit(onSubmit)}
+                disabled={isLoading || !isValid}
             />
 
-            <Inputs
-                id="password"
-                label="Password"
-                disabled={isLoading}
-                register={register}
-                errors={errors}
-                required
-                type="password"
-            />
-            <Button label={isLoading ? "Loading" : "LogIn"} onClick={handleSubmit(onsubmit)} />
-
-            <p className="text-sm">
-                Don't have an account ?
-                <Link href={'/register'} className="text-slate-700 font-semibold underline">
+            <p className="text-sm mt-2">
+                Don't have an account?{" "}
+                <Link href="/register" className="text-slate-700 font-semibold underline">
                     Register
                 </Link>
             </p>
         </>
-    )
-}
+    );
+};
 
-export default LoginForm
+export default LoginForm;

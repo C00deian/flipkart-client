@@ -1,14 +1,23 @@
 import api from "@/app/lib/axios";
+import type { LoginRequest, RegisterRequest, RegisterResponse } from "../types/User";
 import axios from "axios";
 
-export const registerUser = async (data: any) => {
-  const res = await axios.post("http://localhost:8082/users/register", data);
-  return res;
+export const signUp = async (data: RegisterRequest): Promise<RegisterResponse> => {
+  const res = await axios.post<RegisterResponse>(
+    "http://localhost:8081/auth/register",
+    data
+  );
+  
+  return res.data;
 };
 
-export const loginUser = async (data: any) => {
-  const res = await api.post("http://localhost:8081/auth/login", data);
-  return res;
+export const login = async (data: LoginRequest): Promise<RegisterResponse> => {
+  const res = await axios.post<RegisterResponse>(
+    "http://localhost:8081/auth/login",
+    data
+  );
+
+  return res.data;
 };
 
 export const getCurrentUser = async() => {

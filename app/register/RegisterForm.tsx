@@ -1,117 +1,108 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react"
 import { Heading } from "../components/Heading"
-import { Inputs } from "../components/inputs/Inputs"
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
+import Inputs from "../components/inputs/Inputs"
+import { SubmitHandler, useForm } from "react-hook-form"
 import Button from "../components/Button"
 import Link from "next/link"
-import { AiOutlineGoogle } from "react-icons/ai"
+import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { loginUser, registerUser } from "../services/auth.service"
-import { User } from "../types/User"
+import { signUp } from "../services/auth.service"
+import { RegisterRequest, UserResponse } from "../types/User"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema } from "./schema"
+
 
 
 interface RegisterProps {
-    currentUser: User
+    currentUser: UserResponse
     refresh: () => void;
 }
 
-const RegisterForm : React.FC<RegisterProps> = ({currentUser , refresh}) => {
+const RegisterForm: React.FC<RegisterProps> = ({ currentUser ,refresh}) => {
+
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<FieldValues>({
+
+    // ✅ Only ONE useForm
+    const form = useForm<RegisterRequest>({
+        resolver: zodResolver(registerSchema),
         defaultValues: {
-            name: '',
-            email: '',
-            password: ''
-        }
-    })
-
-         useEffect(() => {
-         if (currentUser) {
-             router.push("/cart");
-         }
-     }, [currentUser]);
-
- const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-     setIsLoading(true);
-
-  try {
-    const res =  await registerUser(data);
-    toast.success( res.data.message || "Account created successfully!");
-
-    const response = await loginUser({
-      email: data.email,
-      password: data.password,
+            phoneNumber:""
+        },
+        mode:"onChange"
     });
 
-    const token = response.data.data.token;
+    const { register, handleSubmit, reset, formState: { errors ,isValid} } = form;
 
-      localStorage.setItem("token", token);
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:8081/oauth2/authorization/google"
+    };
 
+    useEffect(() => {
+        if(currentUser) {
+            router.push("/cart");
+        }
+    }, [currentUser]);
 
-    toast.success(response.data.message || "Logged in");
+    const onSubmit: SubmitHandler<RegisterRequest> = async (data) => {
+        setIsLoading(true);
 
-      router.push("/cart");
-      refresh()
-      reset();
+        try {
+            const res = await signUp(data);
 
-  } catch (error: any) {
-    toast.error(error?.response?.data?.message || "Something went wrong");
-  } finally {
-    setIsLoading(false);
-  }
- };
-    
-    
-     if (currentUser) {
+            toast.success(res.message);
+
+            const token = res.data.token
+            localStorage.setItem("token", token);
+
+            refresh();
+
+            router.push("/cart");
+        
+            reset();
+
+        } catch (error: any) {
+            toast.error(error?.response?.data?.message || "Something went wrong");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    if (currentUser) {
         return <p className="text-center">Logged in. Redirecting...</p>
-     }
-    
+    }
 
     return (
         <>
-            <Heading
-                title="Register now to E-Shop"
-            />
-            <Button outline
+            <Heading title="Register now to E-Shop" />
+
+            <Button
+                outline
                 label="Sign up with Google"
-                icon={AiOutlineGoogle}
-                onClick={() => { }}
-            />
-            {/* <hr className="bg-slate-300 w-full h-px" /> */}
-            <Inputs
-                id="name"
-                label="Name"
-                disabled={isLoading}
-                register={register}
-                errors={errors}
-                required
-            />
-            <Inputs
-                id="email"
-                label="Email"
-                disabled={isLoading}
-                register={register}
-                errors={errors}
-                required
+                icon={FcGoogle}
+                onClick={handleGoogleLogin}
             />
 
-            <Inputs
-                id="password"
-                label="Password"
-                disabled={isLoading}
+
+            <Inputs<RegisterRequest>
+                id="phoneNumber"
+                label="Phone Number"
                 register={register}
                 errors={errors}
-                required
-                type="password"
             />
-            <Button label={isLoading ? "Loading" : "Register"} onClick={handleSubmit(onSubmit)} />
+
+            <Button
+                label={isLoading ? "Loading" : "Register"}
+                onClick={handleSubmit(onSubmit)}
+                disabled={isLoading || !isValid}
+            />
 
             <p className="text-sm">
-                Already have an account ? <Link href={'/login'} className="text-slate-700 font-semibold underline">
+                Already have an account?{" "}
+                <Link href={'/login'} className="text-slate-700 font-semibold underline">
                     Login
                 </Link>
             </p>
@@ -119,4 +110,4 @@ const RegisterForm : React.FC<RegisterProps> = ({currentUser , refresh}) => {
     )
 }
 
-export default RegisterForm
+export default RegisterForm;

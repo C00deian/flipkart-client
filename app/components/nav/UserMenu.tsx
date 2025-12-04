@@ -35,7 +35,7 @@ const UserMenu = () => {
                       cursor-pointer hover:bg-slate-700 hover:border hover:rounded-md hover:text-white"
                 >
                     <Avatar />
-                    {currentUser ? currentUser.name : "Login"}
+                    {currentUser ? currentUser.name ? currentUser.name : "User" : "Login"}
 
                     <AiFillCaretDown
                         className={`
