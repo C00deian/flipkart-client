@@ -5,6 +5,7 @@ import Container from '../components/Container'
 import { FormWrap } from '../components/FormWrap'
 import LoginForm from './LoginForm'
 import { AuthContext } from '../context/AuthContext'
+import Redirecting from '../components/Redirecting'
 
 const Login = () => {
    
@@ -13,7 +14,7 @@ const Login = () => {
   return (
         <Container>
             <FormWrap>
-        <LoginForm currentUser={currentUser} refresh={refreshUser} />
+              <LoginForm currentUser={currentUser} refresh={refreshUser} />
             </FormWrap>
         </Container>
   )

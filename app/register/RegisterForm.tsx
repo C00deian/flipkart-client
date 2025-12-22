@@ -13,6 +13,7 @@ import { signUp } from "../services/auth.service"
 import { RegisterRequest, UserResponse } from "../types/User"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "./schema"
+import Redirecting from "../components/Redirecting";
 
 
 
@@ -72,7 +73,7 @@ const RegisterForm: React.FC<RegisterProps> = ({ currentUser ,refresh}) => {
     };
 
     if (currentUser) {
-        return <p className="text-center">Logged in. Redirecting...</p>
+        return <Redirecting/>
     }
 
     return (

@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const signUp = async (data: RegisterRequest): Promise<RegisterResponse> => {
   const res = await axios.post<RegisterResponse>(
-    "http://localhost:8081/auth/register",
+    "http://localhost:8080/auth/register",
     data
   );
   
@@ -13,7 +13,7 @@ export const signUp = async (data: RegisterRequest): Promise<RegisterResponse> =
 
 export const login = async (data: LoginRequest): Promise<RegisterResponse> => {
   const res = await axios.post<RegisterResponse>(
-    "http://localhost:8081/auth/login",
+    "http://localhost:8080/auth/login",
     data
   );
 
@@ -21,7 +21,7 @@ export const login = async (data: LoginRequest): Promise<RegisterResponse> => {
 };
 
 export const getCurrentUser = async() => {
-  const res = await api.get("http://localhost:8081/auth/me");
+  const res = await api.get("/auth/me");
   return res;
 };
 

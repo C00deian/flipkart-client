@@ -15,6 +15,7 @@ import { loginSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isValid } from "zod/v3";
 import { FcGoogle } from "react-icons/fc";
+import Redirecting from "../components/Redirecting";
 
 interface LoginFormProps {
     currentUser: UserResponse;
@@ -83,7 +84,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ currentUser, refresh }) => {
     };
 
     if (currentUser) {
-        return <p className="text-center">Logged in. Redirecting...</p>;
+        return <Redirecting/>
     }
 
     return (
