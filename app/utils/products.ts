@@ -1,4 +1,4 @@
-//I am changing the image links from firebase to amazon, firebase has issues with these direct links. Please remember to add the amazon link(that will show up at the error) instead of firebase at the cofig for it to work out.
+//I am changing the imageUrl links from firebase to amazon, firebase has issues with these direct links. Please remember to add the amazon link(that will show up at the error) instead of firebase at the cofig for it to work out.
 
 export const products = [
   {
@@ -13,13 +13,13 @@ export const products = [
       {
         color: "White",
         colorCode: "#FFFFFF",
-        image:
+        imageUrl:
           "https://m.media-amazon.com/images/I/71p-tHQ0u1L._AC_SX679_.jpg",
       },
       {
         color: "Gray",
         colorCode: "#808080",
-        image:
+        imageUrl:
           "https://m.media-amazon.com/images/I/417tEj3iJ8L._AC_.jpg",
       },
     ],
@@ -38,7 +38,7 @@ export const products = [
       {
         color: "Black",
         colorCode: "#000000",
-        image:
+        imageUrl:
           "https://m.media-amazon.com/images/I/71gOLg2-kqL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
       },
     ],
@@ -55,7 +55,7 @@ export const products = [
           name: "Charles",
           email: "example@gmail.com",
           emailVerified: null,
-          image:
+          imageUrl:
             "https://lh3.googleusercontent.com/a/AAcHTteOiCtILLBWiAoolIW9PJH-r5825pBDl824_8LD=s96-c",
           hashedPassword: null,
           createdAt: "2023-05-30T08:08:53.979Z",
@@ -78,19 +78,19 @@ export const products = [
       {
         color: "Black",
         colorCode: "#000000",
-        image:
+        imageUrl:
           "https://m.media-amazon.com/images/I/61g+McQpg7L._AC_SX679_.jpg",
       },
       {
         color: "Blue",
         colorCode: " #0000FF",
-        image:
+        imageUrl:
           "https://m.media-amazon.com/images/I/713Om9vCHUL._AC_SX679_.jpg",
       },
       {
         color: "Red",
         colorCode: "#FF0000",
-        image:
+        imageUrl:
           "https://m.media-amazon.com/images/I/61thdjmfHcL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
       },
     ],
@@ -108,7 +108,7 @@ export const products = [
           name: "Chaoo",
           email: "example1@gmail.com",
           emailVerified: null,
-          image:
+          imageUrl:
             "https://lh3.googleusercontent.com/a/AAcHTtcuRLwWi1vPKaQOcJlUurlhRAIIq2LgYccE8p32=s96-c",
           hashedPassword: null,
           createdAt: "2023-06-26T15:40:52.558Z",
@@ -128,7 +128,7 @@ export const products = [
           name: "Charles",
           email: "example@gmail.com",
           emailVerified: null,
-          image:
+          imageUrl:
             "https://lh3.googleusercontent.com/a/AAcHTteOiCtILLBWiAoolIW9PJH-r5825pBDl824_8LD=s96-c",
           hashedPassword: null,
           createdAt: "2023-05-30T08:08:53.979Z",
@@ -151,7 +151,7 @@ export const products = [
       {
         color: "Graphite",
         colorCode: " #383838",
-        image:
+        imageUrl:
           "https://m.media-amazon.com/images/I/61ni3t1ryQL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
       },
     ],
@@ -170,13 +170,13 @@ export const products = [
       {
         color: "Black",
         colorCode: "#000000",
-        image:
+        imageUrl:
           "https://m.media-amazon.com/images/I/71s4mjiit3L.__AC_SX300_SY300_QL70_FMwebp_.jpg",
       },
       {
         color: "Silver",
         colorCode: "#C0C0C0",
-        image:
+        imageUrl:
           "https://m.media-amazon.com/images/I/71zbWSRMaYL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
       },
     ],

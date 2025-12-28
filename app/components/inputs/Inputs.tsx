@@ -5,9 +5,11 @@ import { FieldErrors, UseFormRegister, Path, FieldValues } from "react-hook-form
 interface InputProps<T extends FieldValues> {
   id: Path<T>;
   label: string;
+  type?: string; 
+  disabled?: boolean;
+  required?: boolean;
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
-  disabled?: boolean;
 }
 
 const Inputs = <T extends FieldValues>({
@@ -16,48 +18,48 @@ const Inputs = <T extends FieldValues>({
   register,
   errors,
   disabled,
+  required,
+  type = "text",
 }: InputProps<T>) => {
 
-  // Automatic type detection
-  const autoType =
-    id === "email" ? "email" : id === "phoneNumber" ? "text" : "";
-
-  const error = errors[id as keyof FieldErrors<T>];
+  const error = errors[id]; 
 
   return (
     <div className="w-full relative">
       <input
-        id={String(id)}
+        id={id}
         disabled={disabled}
-        autoComplete="off"
-        {...register(id)} 
-        type={autoType}
+        {...register(id, { required })}
+        
+        // ✅ CRITICAL FIXES:
+        type={type} 
+        placeholder=" "
+        
         className={`
-          peer w-full rounded-md p-4 pt-6 outline-none 
-          bg-white border-2 transition 
-          ${error ? "border-red-500" : "border-slate-300"}
-          ${error ? "focus:border-red-500" : "focus:border-slate-300"}
+          peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed
+          ${error ? "border-rose-500" : "border-slate-300"}
+          ${error ? "focus:border-rose-500" : "focus:border-slate-300"}
         `}
       />
 
       <label
-        htmlFor={String(id)}
+        htmlFor={id}
         className={`
-          absolute left-4 top-5 z-10 text-md duration-150 transform
-          -translate-y-3 origin-left cursor-text 
-          peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+          absolute text-md duration-150 transform -translate-y-3 top-5 z-10 origin-[0] left-4 
+          peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
           peer-focus:scale-75 peer-focus:-translate-y-4
-          ${error ? "text-red-500" : "text-slate-400"}
+          ${error ? "text-rose-500" : "text-slate-400"}
         `}
       >
         {label}
       </label>
-
-      {error && (
-        <p className="text-red-500 text-sm mt-1">
-          {(error.message as string) || "Invalid field"}
-        </p>
-      )}
+      
+       {/* Error Message Display */}
+       {error && (
+        <span className="text-rose-500 text-sm mt-1">
+             {error.message as string}
+        </span>
+       )}
     </div>
   );
 };
