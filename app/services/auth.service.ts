@@ -29,7 +29,18 @@ export const getAllCategory = async () => {
 };
 
 export const getAllProducts = async () => {
-  const res = await publicApi.get("/products");
+  const res = await securedApi.get("/products");
+  return res;
+};
+
+export const getAllOrders = async () => {
+  const res = await securedApi.get("/orders");
+  return res;
+};
+
+
+export const deleteProduct = async (id: number) => {
+  const res = await securedApi.delete(`/products/${id}`);
   return res;
 };
 
@@ -42,6 +53,27 @@ export const addProduct = async (
   );
 
   return res.data;
+};
+
+export const dispatchOrder = async (id: string) => {
+    return await securedApi.put(`/orders/${id}/dispatch`); 
+};
+
+export const deliverOrder = async (id: string) => {
+    return await securedApi.put(`/orders/${id}/deliver`);
+};
+
+// @/app/services/auth.service.ts
+
+export const toggleStockStatus = async (id: number) => {
+    return await securedApi.put(`/products/${id}/stock`);
+};
+
+export const getOrderByID = async (id: string) => {
+    return await securedApi.get(`/orders/${id}`);
+};
+export const getProduct = async (id: string) => {
+    return await securedApi.get(`/products/${id}`);
 };
 
 export const getCurrentUser = async () => {

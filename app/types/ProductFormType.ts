@@ -9,7 +9,8 @@ export type Product =  {
   reviews : Review[]
   quantity: number;
   price: number;
-  inStock : boolean
+  inStock: boolean
+  categoryName:string
 };
 
 

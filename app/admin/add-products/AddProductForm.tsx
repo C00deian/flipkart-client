@@ -9,7 +9,7 @@ import { SelectColor } from "@/app/components/inputs/SelectColor";
 
 // ⭐ React Icons Import (Zaroori hai kyunki DB me icons nahi hain)
 import { MdPhoneIphone, MdLaptop, MdWatch, MdTv, MdHome, MdCategory } from "react-icons/md";
-import { AiOutlineCar } from "react-icons/ai"; // Example extra icon
+import { AiOutlineCar, AiOutlineDesktop } from "react-icons/ai"; // Example extra icon
 
 import { ProductFormType, productFormSchema } from "./schema"; 
 import { ImageType } from "@/app/types/ProductFormType";
@@ -37,7 +37,8 @@ const categoryIconMapping: Record<string, any> = {
   "TV": MdTv,
   "Home": MdHome,
   "Automotive": AiOutlineCar,
-  "Default": MdCategory
+  "Default": MdCategory,
+  "Desktop":AiOutlineDesktop
 };
 
 export const AddProductForm = () => {
@@ -110,7 +111,6 @@ export const AddProductForm = () => {
     const fetchCategories = async () => {
       try {
         const res = await getAllCategory();
-        // Maan rahe hain res.data ek array hai [{id: 1, name: 'Phone'}, ...]
         setCategories(res.data);
       } catch (error) {
         console.error("Error fetching categories", error);

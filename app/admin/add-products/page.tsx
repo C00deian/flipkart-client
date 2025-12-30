@@ -9,7 +9,7 @@ import { AddProductForm } from './AddProductForm';
 
 const AddProducts = () => {
   
-      const { currentUser, logout } = useContext(AuthContext);
+      const { currentUser } = useContext(AuthContext);
 
   if (!currentUser || currentUser.id !== 7)
         return   <NullData title='Oops! Access Denied'/>

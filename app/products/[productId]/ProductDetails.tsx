@@ -12,6 +12,7 @@ import { useCallback, useEffect, useState } from "react"
 import { MdCheckCircle } from "react-icons/md"
 import Horizontal from "@/app/components/Horizontal"
 
+
 interface ProductProps {
     product: any
 }
