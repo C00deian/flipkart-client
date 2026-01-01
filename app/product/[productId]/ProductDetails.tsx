@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 import { MdCheckCircle } from "react-icons/md"
 import Horizontal from "@/app/components/Horizontal"
+import { formatePrice } from "@/app/utils/formatePrice"
 
 
 interface ProductProps {
@@ -89,18 +90,19 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
                 product={product}
                 handleColorSelect={handleColorSelect}
             />
-            <div className="flex flex-col gap-1 text-slate-500 text-sm">
-                <h2 className="text-3xl font-medium text-slate-700">{product.name}</h2>
+            <div className="flex flex-col gap-1 text-slate-600 text-sm">
+                <h2 className="text-xl text-slate-700">{product.name}</h2>
                 <div className="flex items-center gap-2">
                     <Rating value={getProductRating(product)} readOnly />
                     <div>{product.reviews.length} reviews</div>
                 </div>
+                <h2 className="text-2xl font-medium text-slate-700">{formatePrice(product.price)}</h2>
                 <Horizontal />
                 <div className="text-justify ">{product.description}</div>
                 <Horizontal />
                 <div>
                     <span className="font-semibold">CATEGORY : </span>
-                    {product.category}
+                    {product.categoryName}
                 </div>
                 <div>
                     <span className="font-semibold">BRAND : </span>
@@ -139,8 +141,8 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
 
                         />
                         <Horizontal />
-                            <SetQuantity
-                                title={"Quantity"}
+                        <SetQuantity
+                            title={"Quantity"}
                             cartProduct={cartProduct}
                             handleQtyIncrease={handleQtyIncrease}
                             handleQtyDecrease={handleQtyDecrease}

@@ -36,7 +36,7 @@ const CartContent: React.FC<ItemContentProps> = ({ item }) => {
                                rounded cursor-pointer`}
                     >
                         <Image
-                            src={item.selectedImage.image}
+                            src={item.selectedImage.imageUrl}
                             alt={item.name}
                             fill
                             className="object-contain"

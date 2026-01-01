@@ -38,7 +38,7 @@ const ManageOrdersClient: React.FC<ManageOrdersProps> = ({ orders }) => {
     // --- API HANDLER: DISPATCH ---
     const handleDispatch = useCallback((id: string) => {
         const toastId = toast.loading("Dispatching order...");
-        
+
         dispatchOrder(id)
             .then((res) => {
                 toast.success("Order Dispatched", { id: toastId });
@@ -88,7 +88,7 @@ const ManageOrdersClient: React.FC<ManageOrdersProps> = ({ orders }) => {
             renderCell: (params) => {
                 return (
                     <div>
-                        {params.row.paymentStatus === 'PAID' ? ( 
+                        {params.row.paymentStatus === 'SUCCESS' ? (
                             <Status
                                 text='Paid'
                                 icon={MdDone}

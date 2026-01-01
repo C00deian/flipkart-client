@@ -1,7 +1,9 @@
 "use client";
 
 import { CartProductType, SelectedImageType } from "@/app/types/CartProductTypes";
+import { Product } from "@/app/types/ProductFormType";
 import Image from "next/image";
+import DummyImagePlaceHolder from "../DummyImagePlaceHolder";
 
 interface ProductImageProps {
   cartProduct: CartProductType;
@@ -59,21 +61,29 @@ export const ProductImage: React.FC<ProductImageProps> = ({
               }
             `}
           >
-            <Image
-              src={image.image}
-              alt={image.color}
-              fill
-              className="object-contain"
-            />
+
+            {
+              image && image.imageUrl ? (
+                <Image
+                  src={image.imageUrl}
+                  alt={image.color}
+                  fill
+                  className="object-contain"
+                />
+              ) : (
+                <DummyImagePlaceHolder />
+              )
+            }
           </div>
         ))}
       </div>
 
       {/* Right side – main selected image */}
       <div className="relative col-span-5 aspect-square">
-        {cartProduct?.selectedImage && (
+
+        {cartProduct?.selectedImage && cartProduct.selectedImage.imageUrl ? (
           <Image
-            src={cartProduct.selectedImage.image}
+            src={cartProduct.selectedImage.imageUrl}
             alt={cartProduct.name}
             fill
             className="object-contain w-full
@@ -82,7 +92,11 @@ export const ProductImage: React.FC<ProductImageProps> = ({
               sm:min-h-[400px]
               "
           />
-        )}
+        ) : (
+          <DummyImagePlaceHolder />
+        )
+
+        }
       </div>
 
     </div>

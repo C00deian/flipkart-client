@@ -1,42 +1,37 @@
+
+import { cookies } from "next/headers";
 import Container from "@/app/components/Container";
-import { OrderDetails } from "./OrderDetails";
 import NullData from "@/app/components/NullData";
-import { getOrderByID } from "@/app/services/auth.service";
+import OrderClient from "../OrderClient";
+import { getOrderById } from "@/app/services/order/service";
 
-interface IParams {
-    params: Promise<{ orderId: string }>;
-}
+export default async function Order({
+  params,
+}: {
+  params: Promise<{ orderId: string }>;
+}) {
+  // ✅ FIX: params is Promise
+  const { orderId } = await params;
 
-const Order = async ({ params }: IParams) => {
+  // ✅ Read token from cookie
+  const token = (await cookies()).get("accessToken")?.value;
 
-    // 1. Params resolve karein
-    const resolvedParams = await params;
-    const orderId = resolvedParams.orderId;
+  if (!token) {
+    return <NullData title="Unauthorized" />;
+  }
 
-    let order = null;
-
-    try {
-        const res = await getOrderByID(orderId);
-        order = res.data.data;
-        console.log("orders" , res.data.data)
-
-    } catch (error) {
-        console.error("Error fetching order:", error);
-        // Error aane par order null hi rahega
-    }
-
-    // 4. Handle Null Case
-    if (!order) {
-        return <NullData title="Order not found or Access Denied" />;
-    }
+  try {
+    const order = await getOrderById(orderId, token);
+    console.log("order" , order)
 
     return (
-        <div className="p-8">
-            <Container>
-                <OrderDetails order={order} />
-            </Container>
-        </div>
+      <div className="p-8">
+        <Container>
+          <OrderClient order={order} />
+        </Container>
+      </div>
     );
-};
-
-export default Order;
+  } catch (error) {
+    return <NullData title="Order not found or access denied" />;
+  }
+}

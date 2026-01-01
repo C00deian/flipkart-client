@@ -4,7 +4,7 @@ import type {
   RegisterResponse,
 } from "../types/User";
 
-import { ProductFormType } from "../types/ProductFormType";
+import { Product, ProductFormType } from "../types/ProductFormType";
 import { publicApi, securedApi } from "@/app/lib/ClientUrlBase";
 
 export const signUp = async (
@@ -72,9 +72,7 @@ export const toggleStockStatus = async (id: number) => {
 export const getOrderByID = async (id: string) => {
     return await securedApi.get(`/orders/${id}`);
 };
-export const getProduct = async (id: string) => {
-    return await securedApi.get(`/products/${id}`);
-};
+
 
 export const getCurrentUser = async () => {
   const res = await securedApi.get("/auth/me");

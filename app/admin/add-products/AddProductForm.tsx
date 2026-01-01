@@ -155,7 +155,6 @@ export const AddProductForm = () => {
         brand: data.brand,
         quantity: Number(data.quantity),
         inStock: data.inStock,
-        // Backend ko 'categoryId' chahiye (Number format mein)
         categoryId: Number(data.category),
         images: uploadedImages,
       };
@@ -259,8 +258,9 @@ export const AddProductForm = () => {
         </div>
       </div>
 
-      <div className="w-full flex flex-col flex-wrap gap-4">
+      <div className="w-full flex flex-col flex-wrap">
         <div className="font-bold">Select the available product colors and upload their images.</div>
+        <p>You must upload an image for each of the color selected otherwise your color selection will be ignored.</p>
         <div className="grid grid-cols-2 gap-3">
           {colors.map((item, index) => (
             <SelectColor

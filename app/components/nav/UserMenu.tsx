@@ -63,7 +63,7 @@ const UserMenu = () => {
                                     <Link href="/orders">
                                         <MenuItems onClick={toggleOpen}>
                                             <FiShoppingBag className="inline-block text-lg" />
-                                            Orders
+                                          Your Orders
                                         </MenuItems>
                                     </Link>
 
