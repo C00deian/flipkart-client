@@ -4,9 +4,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/nav/NavBar";
 import Footer from "./components/footer/Footer";
-import { CartContextProvider } from "./context/CartContext";// ✔ Correct path
+import { CartProvider } from "./context/CartProvider";
 import { Toaster } from "react-hot-toast";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             color: '#fff',
           }
         }}/>
-        <CartContextProvider>
+        <CartProvider>
           <AuthProvider>
           <div className="flex flex-col min-h-screen border">
             <NavBar />
@@ -41,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
                
           </AuthProvider>
-        </CartContextProvider>
+        </CartProvider>
 
       </body>
     </html>

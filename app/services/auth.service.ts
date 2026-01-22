@@ -1,4 +1,5 @@
 import type {
+  CurrentUser,
   LoginRequest,
   RegisterRequest,
   RegisterResponse,
@@ -75,6 +76,6 @@ export const getOrderByID = async (id: string) => {
 
 
 export const getCurrentUser = async () => {
-  const res = await securedApi.get("/auth/me");
-  return res;
+  const res = await securedApi.get<CurrentUser>("/auth/me");
+  return res.data;
 };

@@ -35,3 +35,11 @@ export type UserResponse = {
   name: string;
   email: string;
 };
+
+
+export interface CurrentUser {
+  id: string;
+  email: string;
+  name: string;
+  role: "USER" | "ADMIN"|"SELLER";
+}

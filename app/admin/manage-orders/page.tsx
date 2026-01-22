@@ -11,7 +11,7 @@ import { Orders } from '@/app/types/OrderTypes';
 
 export const ManageOrders = () => {
 
-  const { currentUser } = useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
   const [orders, setOrders] = useState<Orders[]>([]);
 
@@ -31,10 +31,17 @@ export const ManageOrders = () => {
   }, []);
 
 
-  if (!currentUser || currentUser.id !== 7) {
-    return <NullData title='Oops! Access Denied' />
+
+  if (!auth || auth.isLoading) {
+    return <NullData title="Loading..." />;
   }
 
+  const { currentUser } = auth;
+
+  if (!currentUser || currentUser.role !== "ADMIN") {
+    return <NullData title="Oops! Access Denied" />;
+  }
+  
   return (
     <div className='pt-8'>
       <Container>

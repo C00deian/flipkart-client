@@ -5,26 +5,28 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AuthContext } from "@/app/context/AuthContext";
 
 export default function AuthSuccess() {
-    const params = useSearchParams();
-    const router = useRouter();
+  const params = useSearchParams();
+  const router = useRouter();
+  const auth = useContext(AuthContext);
 
-    const { refreshUser } = useContext(AuthContext);
+  useEffect(() => {
+    const login = async () => {
+      const token = params.get("token");
 
-    useEffect(() => {
-        const token = params.get("token");
+      if (!token || !auth) return;
 
-        if (!token) return;
+      // ✅ Store token
+      localStorage.setItem("token", token);
 
-        // Store token
-        localStorage.setItem("token", token);
+      // ✅ Refresh user properly
+      await auth.refreshUser();
 
-        // 🔥 MOST IMPORTANT STEP
-        refreshUser().then(() => {
-            // Refresh ho gaya → user mil gaya
-            router.push("/cart");
-        });
+      // ✅ Redirect AFTER user is loaded
+      router.push("/cart");
+    };
 
-    }, []);
+    login();
+  }, [auth, params, router]);
 
-    return <p>Logging you in...</p>;
+  return <p>Logging you in...</p>;
 }

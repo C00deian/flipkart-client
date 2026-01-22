@@ -26,12 +26,13 @@ const ManageProducts = () => {
     fetchProducts();
   }, []);
 
+const auth = useContext(AuthContext);
 
-  const { currentUser } = useContext(AuthContext);
+ if (!auth || auth.isLoading) return <NullData title="please wait loading..."/>;
 
-  if (!currentUser || currentUser.id !== 7)
-    return <NullData title='Oops! Access Denied' />
-
+if (auth.currentUser?.role !== "ADMIN") {
+  return <NullData title='OOps! Access denied'/>;
+}
 
   return (
     <div className='pt-8'>
