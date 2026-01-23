@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 
 import { uploadToCloudinary } from "@/app/components/helper/uploadToCloudinary";
 import { addCategory } from "@/app/services/auth.service";
+import InputFileUpload from "@/app/components/inputs/InputFileUpload";
 
 export const AddCategoryForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +23,7 @@ export const AddCategoryForm = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<CategoryFormType>({
     resolver: zodResolver(categorySchema),
@@ -85,22 +87,15 @@ const onSubmit: SubmitHandler<CategoryFormType> = async (data) => {
       />
 
       {/* Category Image */}
-      <div className="flex flex-col gap-2">
-  <label className="font-medium">Category Image</label>
+   <InputFileUpload<CategoryFormType>
+  id="imageUrl"
+  label=""
+  register={register}
+  watch={watch}
+  errors={errors}
+  disabled={isLoading}
+/>
 
-  <input
-    type="file"
-    accept="image/*"
-    disabled={isLoading}
-    {...register("imageUrl")}
-  />
-
-  {errors.imageUrl && (
-    <p className="text-sm text-red-500">
-      {errors.imageUrl.message as string}
-    </p>
-  )}
-</div>
 
       <Button
         label={isLoading ? "Loading..." : "Add Category"}

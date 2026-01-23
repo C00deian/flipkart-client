@@ -10,17 +10,22 @@ import { AuthContext } from "@/app/context/AuthContext";
 import { LuLayoutDashboard, LuLogIn, LuLogOut, LuUserPlus } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
 
+import NullData from "../NullData";
 
 const UserMenu = () => {
 
-    const { currentUser, logout } = useContext(AuthContext);
-
+    const auth = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleOpen = useCallback(() => {
         setIsOpen(prev => !prev)
     }, []);
 
+    if (!auth || auth.isLoading) {
+        return <NullData title="Loading..." />;
+    }
+
+    const { currentUser, logout } = auth;
 
     return (
         <>
