@@ -5,8 +5,9 @@ import type {
   RegisterResponse,
 } from "../types/User";
 
-import { Product, ProductFormType } from "../types/ProductFormType";
+import { Category, CategoryFormType, Product, ProductFormType } from "../types/ProductFormType";
 import { publicApi, securedApi } from "@/app/lib/ClientUrlBase";
+import { AxiosResponse } from "axios";
 
 export const signUp = async (
   data: RegisterRequest
@@ -24,15 +25,16 @@ export const login = async (data: LoginRequest): Promise<RegisterResponse> => {
 
 
 
-export const getAllCategory = async () => {
-  const res = await publicApi.get("/products/categories");
-  return res;
+export const getAllCategory = async (): Promise<Category[]> => {
+  const res = await publicApi.get<Category[]>("/products/categories");
+  return res.data;
 };
 
-export const getAllProducts = async () => {
-  const res = await securedApi.get("/products");
-  return res;
-};
+
+// export const getAllProducts = async () => {
+//   const res = await securedApi.get("/products");
+//   return res;
+// };
 
 export const getAllOrders = async () => {
   const res = await securedApi.get("/orders");
@@ -77,5 +79,16 @@ export const getOrderByID = async (id: string) => {
 
 export const getCurrentUser = async () => {
   const res = await securedApi.get<CurrentUser>("/auth/me");
+  return res.data;
+};
+
+export const addCategory = async (
+  data: CategoryFormType
+): Promise<CategoryFormType> => {
+  const res = await securedApi.post<CategoryFormType>(
+    "/products/add-category",
+    data
+  );
+
   return res.data;
 };

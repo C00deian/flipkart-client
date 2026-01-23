@@ -4,6 +4,7 @@ import Container from '../Container'
 import Link from 'next/link'
 import { CartCount } from './CartCount';
 import UserMenu from './UserMenu';
+import Categories from './Categories';
 
 const redressed = Redressed({ subsets: ['latin'], weight: ['400'] });
 
@@ -17,7 +18,7 @@ function NavBar() {
       z-30
       shadow-sm
     '>
-            <div className='py-4 border-b'>
+            <div className='py-4'>
                 <Container>
                     <div className='flex items-center justify-between gap-3 md:gap-0'>
 
@@ -32,6 +33,7 @@ function NavBar() {
                     </div>
                 </Container>
             </div>
+            <Categories/>
         </div>
     )
 }

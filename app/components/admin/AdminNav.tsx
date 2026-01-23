@@ -2,7 +2,7 @@
 import Container from '../Container'
 import { AdminNavItem } from './AdminNavItem'
 import Link from 'next/link'
-import { MdDashboard, MdDns, MdFormatListBulleted, MdLibraryAdd } from 'react-icons/md'
+import { MdCategory, MdDashboard, MdDns, MdFormatListBulleted, MdLibraryAdd } from 'react-icons/md'
 import { usePathname } from 'next/navigation'
 
 export const AdminNav = () => {
@@ -44,6 +44,13 @@ gap-8 md:gap-12 overflow-x-auto flex-nowrap">
                             label='ManageOrders'
                             icon={MdFormatListBulleted}
                             selected={pathname === "/admin/manage-orders"}
+                        />
+                    </Link>
+                        <Link href={"/admin/add-category"}>
+                        <AdminNavItem
+                            label='AddCategories'
+                            icon={MdCategory}
+                            selected={pathname === "/admin/add-category"}
                         />
                     </Link>
                 </div>
