@@ -1,5 +1,4 @@
 "use client";
-
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { CartContext } from "./CartContext";
@@ -113,3 +112,92 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
+
+
+// import { createContext, useContext, useState } from "react";
+// import toast from "react-hot-toast";
+
+// import { CartContextType } from "@/app/types/CartContextType";
+// import { CartDto } from "@/app/types/CartProductTypes";
+// import { createCart, addItemToCart } from "@/app/services/cart.service";
+// import { AuthContext } from "@/app/context/AuthContext";
+
+// export const CartContext = createContext<CartContextType | null>(null);
+
+// export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+//   const auth = useContext(AuthContext);
+//   if (!auth) {
+//     throw new Error("CartProvider must be used inside AuthProvider");
+//   }
+
+//   const { currentUser } = auth;
+
+//   const [cart, setCart] = useState<CartDto | null>(null);
+//   const [loading, setLoading] = useState(false);
+
+//   const handleAddProductToCart = async (
+//     productId: string,
+//     quantity = 1
+//   ) => {
+//     if (!currentUser) {
+//       toast.error("Please login first");
+//       return;
+//     }
+
+//     try {
+//       setLoading(true);
+
+//       let activeCart = cart;
+//       if (!activeCart) {
+//         activeCart = await createCart();
+//         setCart(activeCart);
+//       }
+
+//       const addedItem = await addItemToCart(
+//         currentUser.id,
+//         productId,
+//         quantity
+//       );
+
+//       // optimistic update
+//       setCart((prev) =>
+//         prev
+//           ? {
+//               ...prev,
+//               items: [...prev.items, addedItem],
+//               totalQuantity: prev.totalQuantity + quantity,
+//               totalAmount:
+//                 prev.totalAmount + addedItem.unitPrice * quantity,
+//             }
+//           : prev
+//       );
+
+//       toast.success("Product added to cart");
+//     } catch (error) {
+//       console.error(error);
+//       toast.error("Failed to add product");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleClearCart = () => {
+//     setCart(null);
+//   };
+
+//   const value: CartContextType = {
+//     cartId: cart?.id ?? null,
+//     cart,
+//     cartTotalQty: cart?.totalQuantity ?? 0,
+//     cartTotalAmount: cart?.totalAmount ?? 0,
+//     loading,
+//     handleAddProductToCart,
+//     handleClearCart,
+//   };
+
+//   return (
+//     <CartContext.Provider value={value}>
+//       {children}
+//     </CartContext.Provider>
+//   );
+// };

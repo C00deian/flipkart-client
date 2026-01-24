@@ -9,6 +9,24 @@ export type CartProductType = {
   price: number;
 };
 
+
+export interface CartDto {
+  id: string;
+  userId: string;
+  items: CartItemDto[];
+  totalAmount: number;
+  totalQuantity: number;
+}
+
+export interface CartItemDto {
+  id: string;
+  productId: string;
+  productName: string;
+  unitPrice: number;
+  quantity: number;
+}
+
+
 export type SelectedImageType = {
   color: string;
   colorCode: string;

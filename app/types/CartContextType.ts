@@ -10,3 +10,19 @@ import { CartProductType } from "./CartProductTypes"
     handleCartQtyDecrease: (product: CartProductType) => void;
     handleClearCart: () => void;
 }
+
+// export interface CartContextType {
+//   cartId: string | null;
+//   cart: CartDto | null;
+
+//   cartTotalQty: number;
+//   cartTotalAmount: number;
+//   loading: boolean;
+
+//   handleAddProductToCart: (
+//     productId: string,
+//     quantity?: number
+//   ) => Promise<void>;
+
+//   handleClearCart: () => void;
+// }

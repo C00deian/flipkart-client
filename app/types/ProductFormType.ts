@@ -36,13 +36,16 @@ export type UploadedImageType = {
   imageUrl: string;
 };
 
-export type Review = {
-  id: string;
-  userId: string;
-  productId: string;
+export interface Review {
+  id: number;
+  rating: number;
+  title?: string | null;
   comment: string;
-  createdDate: string;
-};
+  userId: string;
+  isVerifiedPurchase?: boolean;
+  helpfulCount?: number;
+  createdAt: string;
+}
 
 export type Category = {
   id: number;
