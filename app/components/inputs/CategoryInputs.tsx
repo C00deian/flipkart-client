@@ -7,7 +7,7 @@ import DummyImagePlaceHolder from "../DummyImagePlaceHolder";
 interface CategoryInputsProps {
   selected?: boolean;
   label: string;
-  imageUrl: string;
+  imageUrl: string | null;
   onClick: () => void;
 }
 

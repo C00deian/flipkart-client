@@ -52,7 +52,7 @@ export const CartClient = () => {
 
             <div>
                 {cartProducts && cartProducts.map((item) => {
-                    return <CartContent key={item.id} item={item} />
+                    return <CartContent key={item.productId} item={item} />
                 })}
             </div>
             <div className="flex  border-t-2 border-slate-200

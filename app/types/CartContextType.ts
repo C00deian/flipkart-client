@@ -1,28 +1,13 @@
-import { CartProductType } from "./CartProductTypes"
+import { CartItemType, CartProductType } from "./CartProductTypes"
 
  export type CartContextType = {
     cartTotalQty: number
     cartTotalAmount:number
-    cartProducts: CartProductType[]
+    cartProducts: CartItemType[]
      handleAddProductToCart: (product: CartProductType) => void;
-     handleRemoveProductFromCart: (product: CartProductType) => void;
-     handleCartQtyIncrease: (product: CartProductType) => void;
-    handleCartQtyDecrease: (product: CartProductType) => void;
+     handleRemoveProductFromCart: (product: CartItemType) => void;
+     handleCartQtyIncrease: (product: CartItemType) => void;
+    handleCartQtyDecrease: (product: CartItemType) => void;
     handleClearCart: () => void;
 }
 
-// export interface CartContextType {
-//   cartId: string | null;
-//   cart: CartDto | null;
-
-//   cartTotalQty: number;
-//   cartTotalAmount: number;
-//   loading: boolean;
-
-//   handleAddProductToCart: (
-//     productId: string,
-//     quantity?: number
-//   ) => Promise<void>;
-
-//   handleClearCart: () => void;
-// }

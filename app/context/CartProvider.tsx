@@ -1,95 +1,156 @@
 "use client";
+
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
 import { CartContext } from "./CartContext";
 import { CartContextType } from "@/app/types/CartContextType";
-import { CartProductType } from "@/app/types/CartProductTypes";
+import {
+  CartItemType,
+  CartProductType,
+} from "@/app/types/CartProductTypes";
 
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+import {
+  addItemToCart,
+  getMyCart,
+  removeItemFromCart,
+  clearCart,
+  decreaseItemQty,
+} from "@/app/services/cart.service";
+
+export const CartProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [cartProducts, setCartProducts] = useState<CartItemType[]>([]);
   const [cartTotalQty, setCartTotalQty] = useState<number>(0);
-  const [cartProducts, setCartProducts] = useState<CartProductType[]>([]);
   const [cartTotalAmount, setCartTotalAmount] = useState<number>(0);
 
-  // 🟢 Add product
-  const handleAddProductToCart = useCallback((product: CartProductType) => {
-    setCartProducts((prev) => {
-      const updatedCart = [...prev, product];
-      localStorage.setItem("eShopCartItems", JSON.stringify(updatedCart));
-      return updatedCart;
-    });
-    toast.success("Product added to cart.");
-  }, []);
+  /* ======================================================
+     🔁 Reload Cart (SINGLE SOURCE OF TRUTH)
+     ====================================================== */
+  const reloadCart = useCallback(async () => {
+    try {
+      const cart = await getMyCart();
 
-  // 🔴 Remove product
-  const handleRemoveProductFromCart = useCallback((product: CartProductType) => {
-    setCartProducts((prev) => {
-      const filtered = prev.filter((item) => item.id !== product.id);
-      localStorage.setItem("eShopCartItems", JSON.stringify(filtered));
-      return filtered;
-    });
-    toast.success("Product removed.");
-  }, []);
+      const mappedItems: CartItemType[] = cart.items.map((item: any) => ({
+        productId: item.productId,
+        name: item.productName,
+        image: item.productImage,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        totalPrice: item.totalPrice,
+      }));
 
-  // ➕ Increase qty
-  const handleCartQtyIncrease = useCallback((product: CartProductType) => {
-    setCartProducts((prev) => {
-      const updated = [...prev];
-      const index = updated.findIndex((item) => item.id === product.id);
-
-      if (index > -1) {
-        if (updated[index].quantity === 49) {
-          toast.error("Oops! Maximum reached");
-          return prev;
-        }
-        updated[index].quantity += 1;
-      }
-
-      localStorage.setItem("eShopCartItems", JSON.stringify(updated));
-      return updated;
-    });
-  }, []);
-
-  // ➖ Decrease qty
-  const handleCartQtyDecrease = useCallback((product: CartProductType) => {
-    setCartProducts((prev) => {
-      const updated = [...prev];
-      const index = updated.findIndex((item) => item.id === product.id);
-
-      if (index > -1) {
-        if (updated[index].quantity === 1) {
-          toast.error("Oops! Minimum reached");
-          return prev;
-        }
-        updated[index].quantity -= 1;
-      }
-
-      localStorage.setItem("eShopCartItems", JSON.stringify(updated));
-      return updated;
-    });
-  }, []);
-
-  // 🧹 Clear cart
-  const handleClearCart = useCallback(() => {
-    setCartProducts([]);
-    setCartTotalQty(0);
-    setCartTotalAmount(0);
-    localStorage.removeItem("eShopCartItems");
-  }, []);
-
-  // 🔄 Load cart from localStorage
-  useEffect(() => {
-    const stored = localStorage.getItem("eShopCartItems");
-    if (stored) {
-      setCartProducts(JSON.parse(stored));
+      setCartProducts(mappedItems);
+    } catch (error) {
+      setCartProducts([]);
     }
   }, []);
 
-  // 🧮 Calculate totals
+  /* ======================================================
+     🟢 ADD PRODUCT
+     ====================================================== */
+  const handleAddProductToCart = useCallback(
+    async (product: CartProductType) => {
+      try {
+        await addItemToCart(product.id, 1);
+        await reloadCart();
+        toast.success("Product added to cart");
+      } catch {
+        toast.error("Failed to add product");
+      }
+    },
+    [reloadCart]
+  );
+
+  /* ======================================================
+     🔴 REMOVE SINGLE ITEM
+     ====================================================== */
+  const handleRemoveProductFromCart = useCallback(
+    async (item: CartItemType) => {
+      try {
+        await removeItemFromCart(item.productId);
+        await reloadCart();
+        toast.success("Product removed");
+      } catch {
+        toast.error("Failed to remove product");
+      }
+    },
+    [reloadCart]
+  );
+
+  /* ======================================================
+     ➕ INCREASE QUANTITY
+     ====================================================== */
+  const handleCartQtyIncrease = useCallback(
+    async (item: CartItemType) => {
+      if (item.quantity >= 49) {
+        toast.error("Maximum quantity reached");
+        return;
+      }
+
+      try {
+        await addItemToCart(item.productId, 1);
+        await reloadCart();
+      } catch {
+        toast.error("Failed to increase quantity");
+      }
+    },
+    [reloadCart]
+  );
+
+  /* ======================================================
+     ➖ DECREASE QUANTITY
+     ====================================================== */
+  const handleCartQtyDecrease = useCallback(
+    async (item: CartItemType) => {
+      if (item.quantity <= 1) {
+        toast.error("Minimum quantity reached");
+        return;
+      }
+
+      try {
+        await decreaseItemQty(item.productId);
+        await reloadCart();
+      } catch {
+        toast.error("Failed to decrease quantity");
+      }
+    },
+    [reloadCart]
+  );
+
+  /* ======================================================
+     🧹 CLEAR CART
+     ====================================================== */
+  const handleClearCart = useCallback(async () => {
+    try {
+      await clearCart();
+      setCartProducts([]);
+      setCartTotalQty(0);
+      setCartTotalAmount(0);
+      toast.success("Cart cleared");
+    } catch {
+      toast.error("Failed to clear cart");
+    }
+  }, []);
+
+  /* ======================================================
+     🔄 INITIAL LOAD
+     ====================================================== */
+  useEffect(() => {
+    reloadCart();
+  }, [reloadCart]);
+
+  /* ======================================================
+     🧮 TOTALS CALCULATION
+     ====================================================== */
   useEffect(() => {
     const { total, qty } = cartProducts.reduce(
       (acc, item) => {
-        acc.total += item.price * item.quantity;
-        acc.qty += item.quantity;
+        acc.total += (item.unitPrice ?? 0) * (item.quantity ?? 0);
+        acc.qty += item.quantity ?? 0;
         return acc;
       },
       { total: 0, qty: 0 }
@@ -99,9 +160,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     setCartTotalQty(qty);
   }, [cartProducts]);
 
+  /* ======================================================
+     📦 CONTEXT VALUE
+     ====================================================== */
   const value: CartContextType = {
-    cartTotalQty,
     cartProducts,
+    cartTotalQty,
     cartTotalAmount,
     handleAddProductToCart,
     handleRemoveProductFromCart,
@@ -110,94 +174,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     handleClearCart,
   };
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+    </CartContext.Provider>
+  );
 };
-
-
-// import { createContext, useContext, useState } from "react";
-// import toast from "react-hot-toast";
-
-// import { CartContextType } from "@/app/types/CartContextType";
-// import { CartDto } from "@/app/types/CartProductTypes";
-// import { createCart, addItemToCart } from "@/app/services/cart.service";
-// import { AuthContext } from "@/app/context/AuthContext";
-
-// export const CartContext = createContext<CartContextType | null>(null);
-
-// export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-//   const auth = useContext(AuthContext);
-//   if (!auth) {
-//     throw new Error("CartProvider must be used inside AuthProvider");
-//   }
-
-//   const { currentUser } = auth;
-
-//   const [cart, setCart] = useState<CartDto | null>(null);
-//   const [loading, setLoading] = useState(false);
-
-//   const handleAddProductToCart = async (
-//     productId: string,
-//     quantity = 1
-//   ) => {
-//     if (!currentUser) {
-//       toast.error("Please login first");
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-
-//       let activeCart = cart;
-//       if (!activeCart) {
-//         activeCart = await createCart();
-//         setCart(activeCart);
-//       }
-
-//       const addedItem = await addItemToCart(
-//         currentUser.id,
-//         productId,
-//         quantity
-//       );
-
-//       // optimistic update
-//       setCart((prev) =>
-//         prev
-//           ? {
-//               ...prev,
-//               items: [...prev.items, addedItem],
-//               totalQuantity: prev.totalQuantity + quantity,
-//               totalAmount:
-//                 prev.totalAmount + addedItem.unitPrice * quantity,
-//             }
-//           : prev
-//       );
-
-//       toast.success("Product added to cart");
-//     } catch (error) {
-//       console.error(error);
-//       toast.error("Failed to add product");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleClearCart = () => {
-//     setCart(null);
-//   };
-
-//   const value: CartContextType = {
-//     cartId: cart?.id ?? null,
-//     cart,
-//     cartTotalQty: cart?.totalQuantity ?? 0,
-//     cartTotalAmount: cart?.totalAmount ?? 0,
-//     loading,
-//     handleAddProductToCart,
-//     handleClearCart,
-//   };
-
-//   return (
-//     <CartContext.Provider value={value}>
-//       {children}
-//     </CartContext.Provider>
-//   );
-// };

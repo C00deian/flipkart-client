@@ -24,7 +24,18 @@ export interface CartItemDto {
   productName: string;
   unitPrice: number;
   quantity: number;
+  productImage: string
 }
+
+export type CartItemType = {
+  productId: number;
+  name: string;
+  image: string
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+};
+
 
 
 export type SelectedImageType = {
