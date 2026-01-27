@@ -5,9 +5,9 @@ import type {
   RegisterResponse,
 } from "../types/User";
 
-import { Category, CategoryFormType, Product, ProductFormType } from "../types/ProductFormType";
+import { Category, CategoryFormType, ProductFormType } from "../types/ProductFormType";
 import { publicApi, securedApi } from "@/app/lib/ClientUrlBase";
-import { AxiosResponse } from "axios";
+
 
 export const signUp = async (
   data: RegisterRequest

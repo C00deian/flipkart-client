@@ -22,7 +22,8 @@ export const CartProvider = ({
   children,
 }: {
   children: React.ReactNode;
-}) => {
+  }) => {
+  const [cartId, setCartId] = useState<string | null>(null);
   const [cartProducts, setCartProducts] = useState<CartItemType[]>([]);
   const [cartTotalQty, setCartTotalQty] = useState<number>(0);
   const [cartTotalAmount, setCartTotalAmount] = useState<number>(0);
@@ -33,6 +34,8 @@ export const CartProvider = ({
   const reloadCart = useCallback(async () => {
     try {
       const cart = await getMyCart();
+
+       setCartId(cart.id);
 
       const mappedItems: CartItemType[] = cart.items.map((item: any) => ({
         productId: item.productId,
@@ -164,6 +167,7 @@ export const CartProvider = ({
      📦 CONTEXT VALUE
      ====================================================== */
   const value: CartContextType = {
+    cartId,
     cartProducts,
     cartTotalQty,
     cartTotalAmount,

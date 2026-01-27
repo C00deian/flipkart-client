@@ -7,10 +7,11 @@ import { Heading } from "../components/Heading";
 import Button from "../components/Button";
 import CartContent from "./CartContent";
 import { formatePrice } from "../utils/formatePrice";
+import { checkout } from "../services/checkout.service";
 
 
 export const CartClient = () => {
-    const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
+    const { cartProducts, handleClearCart, cartTotalAmount,cartId } = useCart();
 
     if (!cartProducts || cartProducts.length === 0) {
         return (
@@ -69,7 +70,17 @@ export const CartClient = () => {
                     </div>
 
                     <p className=" text-slate-500">Taxes and shipping calculated at checkout</p>
-                    <Button label="Checkout" onClick={() => { }} />
+                    <Button
+                        label="Checkout"
+                        onClick={() => {
+                            if (!cartId) {
+                                alert("Cart not found");
+                                return;
+                            }
+                            checkout(cartId);
+                        }}
+                    />
+
                     <Link href={"/"}
                         className=" text-slate-500 flex items-center gap-1 mt-2" >
                         <MdArrowBack />

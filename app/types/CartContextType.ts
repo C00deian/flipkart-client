@@ -1,6 +1,7 @@
 import { CartItemType, CartProductType } from "./CartProductTypes"
 
- export type CartContextType = {
+export type CartContextType = {
+     cartId : string | null
     cartTotalQty: number
     cartTotalAmount:number
     cartProducts: CartItemType[]
