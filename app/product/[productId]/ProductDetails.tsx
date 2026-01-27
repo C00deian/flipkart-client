@@ -18,6 +18,7 @@ interface ProductProps {
     product: any
 }
 
+
 const ProductDetails: React.FC<ProductProps> = ({ product }) => {
 
     const { handleAddProductToCart, cartProducts, cartTotalQty } = useCart();
@@ -41,7 +42,7 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
     useEffect(() => {
         setIsProductInCart(false)
         if (cartProducts) {
-            const existingIndex = cartProducts.findIndex((item) => item.id === product.id);
+            const existingIndex = cartProducts.findIndex((item) => item.productId === product.id);
             if (existingIndex > -1) {
                 setIsProductInCart(true);
             }
@@ -57,28 +58,7 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
         [cartProduct.selectedImage]
     );
 
-    // console.log("cartProduct", cartProduct)
-
-    const handleQtyIncrease = useCallback(() => {
-        setCartProduct((prev) => {
-            if (prev.quantity === 49) return prev;
-            return {
-                ...prev,
-                quantity: prev.quantity + 1,
-            };
-        });
-    }, []);
-
-
-    const handleQtyDecrease = useCallback(() => {
-        setCartProduct((prev) => {
-            if (prev.quantity === 1) return prev;
-            return {
-                ...prev,
-                quantity: prev.quantity - 1,
-            };
-        });
-    }, []);
+    // console.log("cartProduct", cartProduct
 
 
     return (
@@ -133,21 +113,14 @@ const ProductDetails: React.FC<ProductProps> = ({ product }) => {
                         </div>
                     </>
                 ) : (
-                    <>
+                        <>
                         <SetColor
                             images={product.images}
                             cartProduct={cartProduct}
                             handleColorSelect={handleColorSelect}
-
-                        />
-                        <Horizontal />
-                        <SetQuantity
-                            title={"Quantity"}
-                            cartProduct={cartProduct}
-                            handleQtyIncrease={handleQtyIncrease}
-                            handleQtyDecrease={handleQtyDecrease}
-                        />
-                        <Horizontal />
+                            />
+                                <Horizontal /> 
+                    
                         <div className="max-w-[300px]">
                             <Button
                                 label="Add to Cart"

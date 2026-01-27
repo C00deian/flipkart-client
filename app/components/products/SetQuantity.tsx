@@ -5,11 +5,10 @@ import { CartItemType, CartProductType } from "@/app/types/CartProductTypes"
 
 interface SetQtyProps {
     cartCounter?: boolean
-    cartProduct: CartItemType
+    cartProduct: CartProductType
     handleQtyIncrease: () => void;
     handleQtyDecrease: () => void;
     title? : string
-
 }
 
 const btnStyle = 'border-[1.2px] border-slate-300 px-2 rounded cursor-pointer'

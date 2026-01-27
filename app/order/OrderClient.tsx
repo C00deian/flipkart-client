@@ -7,9 +7,15 @@ import NullData from "@/app/components/NullData";
 import { OrderDetails } from "./OrderDetails";
 
 export default function OrderClient({ order }: any) {
-  const { currentUser } = useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
-  if (!currentUser || currentUser.id !== 7) {
+if (!auth || auth.isLoading) {
+    return <NullData title="Loading..." />;
+  }
+
+  const { currentUser } = auth;
+
+  if (!currentUser || currentUser.role !== "ADMIN") {
     return <NullData title="Oops! Access Denied" />;
   }
 
